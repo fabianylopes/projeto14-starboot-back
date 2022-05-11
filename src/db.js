@@ -14,6 +14,4 @@ try {
     console.log(chalk.redBright("Failure to connect to Mongo"), error)
 }
 
-
 export default db;
-
