@@ -91,6 +91,30 @@ app.get('/suggestions', async(req, res)=>{
     }
 })
 
+app.post('/articles', async (req,res)=>{
+    /*
+    [] Validar body da requisição 
+    [x] Inserir artigo no banco de dados 
+    [x] Enviar resposta da requisição 
+    */
+
+    const article = req.body
+
+    try {
+        const articleCollection = await db.collection("articles")
+        articleCollection.insertOne(
+            {
+                title: article.title, 
+                content: article.content,
+                product_id: article.product_id, 
+                date: Date.now()
+            }
+        )
+        res.sendStatus(201)    
+    } catch (error) {
+        console.log("Deu ruim pra inserir a sugestão no banco", error)
+    }
+})
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {
