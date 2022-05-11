@@ -7,11 +7,33 @@ app.use(cors());
 app.use(json());
 
 app.post('/coffees', async (req, res) =>{
+
+    /*
+    [] Validar body da requisição 
+    [] Inserir produto no banco de dados 
+    [] Enviar resposta da requisição 
+    */
+
     const coffee = req.body
     try {
         const coffeeCollection = await db.collection("products")
         coffeeCollection.insertOne(coffee)
-        res.sendStatus(200)
+        res.sendStatus(201)
+    } catch (error) {
+        console.log("Deu ruim pra inserir o café no banco", error)
+    }
+})
+
+app.get('/coffees', async(req, res)=>{
+    /*
+    [] Buscar produtos no banco de dados 
+    [] Enviar resposta da requisição 
+    */
+
+    try {
+        const coffeeCollection = await db.collection("products")
+        const coffees = await coffeeCollection.find({}).toArray()
+        res.status(200).send(coffees)
     } catch (error) {
         console.log("Deu ruim pra inserir o café no banco", error)
     }
