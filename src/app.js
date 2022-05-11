@@ -1,6 +1,7 @@
 import express, { json } from "express";
 import cors from "cors";
 import db from "./db.js";
+import { ObjectId } from "mongodb";
 
 const app = express();
 app.use(cors());
@@ -43,8 +44,8 @@ app.get('/coffees', async(req, res)=>{
 app.post('/suggestions', async(req, res)=>{
     /*
     [] Validar body da requisição 
-    [] Inserir produto no banco de dados 
-    [] Enviar resposta da requisição 
+    [x] Inserir produto no banco de dados 
+    [x] Enviar resposta da requisição 
     */
 
     const suggestion = req.body
@@ -63,6 +64,34 @@ app.post('/suggestions', async(req, res)=>{
         console.log("Deu ruim pra inserir a sugestão no banco", error)
     }
 })
+
+app.get('/suggestions', async(req, res)=>{
+    /*
+    [x] Obter sugestões do banco 
+    [x] Obter o product_id da última sugestão inserida no banco
+    [x] Buscar o produto através do product_id
+    [x] Enviar produto com a resposta da requisição 
+    */
+   
+    try {
+        const suggestionCollection = await db.collection("suggestions")
+        const suggestion = await suggestionCollection.find({}).sort({_id:-1}).limit(1).toArray()
+        const coffee = await db.collection("products").findOne({_id: new ObjectId(suggestion[0].product_id)})
+
+        const specialistSuggestion = 
+        {
+            image: coffee.productImage,
+            description: suggestion[0].description, 
+            product_id: suggestion[0].product_id
+        }
+
+        res.status(201).send(specialistSuggestion)    
+    } catch (error) {
+        console.log("Deu ruim pra achar a sugestão no banco", error)
+    }
+})
+
+
 const port = process.env.PORT || 5000
 app.listen(port, () => {
     console.log(('Running on ' + port));
