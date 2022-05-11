@@ -75,8 +75,8 @@ app.get('/suggestions', async(req, res)=>{
    
     try {
         const suggestionCollection = await db.collection("suggestions")
-        const suggestion = await suggestionCollection.find({}).sort({_id:-1}).limit(1).toArray()
-        const coffee = await db.collection("products").findOne({_id: new ObjectId(suggestion[0].product_id)})
+        const suggestion = await suggestionCollection.find({}).sort({_id:-1}).limit(1).toArray() //ordena por ordem decrescente de ids
+        const coffee = await db.collection("products").findOne({_id: new ObjectId(suggestion[0].product_id)}) 
 
         const specialistSuggestion = 
         {
@@ -111,6 +111,22 @@ app.post('/articles', async (req,res)=>{
             }
         )
         res.sendStatus(201)    
+    } catch (error) {
+        console.log("Deu ruim pra inserir a sugestão no banco", error)
+    }
+})
+
+
+app.get('/articles', async (req,res)=>{
+    /*
+    [x] Obter último artigo inserido no banco
+    [x] Enviar resposta da requisição 
+    */
+
+    try {
+        const articleCollection = await db.collection("articles")
+        const article = await articleCollection.find({}).sort({_id:-1}).limit(1).toArray()
+        res.status(200).send(article[0])    
     } catch (error) {
         console.log("Deu ruim pra inserir a sugestão no banco", error)
     }
