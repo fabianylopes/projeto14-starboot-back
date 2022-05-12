@@ -22,7 +22,8 @@ export async function getSuggestions(req, res){
             product_id: suggestion[0].product_id
         }
 
-        res.status(201).send(specialistSuggestion)    
+        console.log(specialistSuggestion)
+        res.status(200).send(specialistSuggestion)    
     } catch (error) {
         console.log("Deu ruim pra achar a sugestão no banco", error)
     }
