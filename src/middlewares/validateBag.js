@@ -12,8 +12,6 @@ async function checkAvaliability(req, res, next){
     const {product_id} = req.query
     const {requiredQuantity} = req.body
 
-    console.log(product_id, requiredQuantity)
-
     if(!product_id || !requiredQuantity) return res.sendStatus(404)
 
     
