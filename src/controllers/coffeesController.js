@@ -8,7 +8,9 @@ export async function getCoffees(req, res){
     [x] Enviar resposta da requisição 
     */
 
-    const {id} = req.query
+    //const {id} = req.query
+
+    const id = req.params.coffeeId;
 
     try {
         const coffeeCollection = await db.collection("products")
