@@ -30,14 +30,21 @@ export async function setSignIn (req, res){
         return res.sendStatus(401);
     }
     
-    const name = customer.name;
+    const customerInfo = 
+    {
+        name: customer.name,
+        street: customer.street,
+        number: customer.number,
+        city: customer.city,
+        state: customer.state
+    };
     
     const rightPassword = bcrypt.compareSync(password, customer.password);
     if(rightPassword){
         const token = uuid();
         
         await db.collection('session').insertOne({ token, customerId: customer._id});
-        return res.send({token, name});
+        return res.send({token, customerInfo});
     }
         
     res.sendStatus(401);
