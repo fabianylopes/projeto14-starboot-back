@@ -6,16 +6,19 @@ export async function setBag(req, res) {
     /*
     [] atualizar o array produtos, com o novo produto inserido
     */
+   const {bag_id} = req.query
+   const product = req.body
+
 
     try {
 
-        await db.collection("bag").updateOne({ _id: new ObjectId("627ec6ed5a98fc60f4f61b9a") },
+        await db.collection("bag").updateOne({ _id: new ObjectId(bag_id) },
             {
                 $addToSet: {
                     "products":
                     {
-                        product_id: "aaaaa",
-                        quantity: 2
+                        product_id: product.product_id,
+                        quantity: product.requiredQuantity
                     }
                 }
             }
