@@ -9,7 +9,7 @@ try {
     await db.collection("bag").insertOne(
         {   
             owner_id: null, 
-            prodtucts: [],
+            products: [],
             temporaryToken
         }
     )
@@ -39,18 +39,18 @@ export async function setBag(req, res) {
     /*
     [] atualizar o array produtos, com o novo produto inserido
     */
-   const {bag_id} = req.query
+   const {bag_id, product_id} = req.query
    const product = req.body
 
-
+    console.log(bag_id)
     try {
-
-        await db.collection("bag").updateOne({ _id: new ObjectId(bag_id) },
+        const session = await db.collection("session").findOne({token: bag_id})
+        await db.collection("bag").updateOne({ _id: new ObjectId(session.bag_id.toString()) },
             {
                 $addToSet: {
                     "products":
                     {
-                        product_id: product.product_id,
+                        product_id,
                         quantity: product.requiredQuantity
                     }
                 }
@@ -59,8 +59,8 @@ export async function setBag(req, res) {
             return res.sendStatus(200)
 
     } catch (error) {
-        return res.sendStatus(500)
         console.log("Deu ruim pra atualizar a sacola", error)
+        return res.sendStatus(500)
     }
 
 }

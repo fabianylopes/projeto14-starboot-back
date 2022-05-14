@@ -5,7 +5,7 @@ import { Router } from "express";
 const bagRouter = Router()
 
 bagRouter.post('/bag', createBag)
-bagRouter.post('/bag',checkAvaliability, setBag)
+bagRouter.put('/bag',checkAvaliability, setBag)
 
 
 export default bagRouter
