@@ -3,6 +3,17 @@ import db from "../db.js";
 import { v4 as uuid } from 'uuid';
 
 export async function createBag(req, res){
+
+    /*
+    [x] inserir uma nova sacola ao banco de dados 
+        com um tokend temporário vinculado 
+    [x] obter o id da sacola criada através do
+        do token temporário
+    [x] criar uma sessão com o id da sacola e um token
+    [x] remover o token temporário da sacola 
+    [x] enviar o token da sessão  
+    */
+
     const token = uuid()
     const temporaryToken = uuid()
 try {
@@ -39,19 +50,19 @@ export async function setBag(req, res) {
     /*
     [] atualizar o array produtos, com o novo produto inserido
     */
-   const {bag_id, product_id} = req.query
-   const product = req.body
+   const {bag_token, product_id} = req.query
+   const {requiredQuantity} = req.body
 
-    console.log(bag_id)
     try {
-        const session = await db.collection("session").findOne({token: bag_id})
-        await db.collection("bag").updateOne({ _id: new ObjectId(session.bag_id.toString()) },
+        const session = await db.collection("session").findOne({token: bag_token})
+        const {bag_id} = session
+        await db.collection("bag").updateOne({ _id: new ObjectId(bag_id.toString()) },
             {
                 $addToSet: {
                     "products":
                     {
                         product_id,
-                        quantity: product.requiredQuantity
+                        requiredQuantity
                     }
                 }
             }
@@ -63,4 +74,29 @@ export async function setBag(req, res) {
         return res.sendStatus(500)
     }
 
+}
+
+export async function getBag(req, res) {
+    const bag = res.locals.bag
+    let bagProducts = []
+    const produtcts = bag.products
+    for (let product of produtcts){
+        try {
+            const item = await db.collection("products").findOne({_id: new ObjectId(product.product_id)})
+            bagProducts.push(
+                {
+                    name: item.name, 
+                    productImage: item.productImage,
+                    price: item.price, 
+                    requiredQuantity: product.requiredQuantity
+                    
+                }
+            )
+        } catch (error) {
+            
+        }
+    }
+
+
+    res.status(200).send(bagProducts)
 }

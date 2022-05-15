@@ -25,4 +25,5 @@ async function checkAvaliability(req, res, next){
     }
 }
 
+
 export{checkAvaliability}
