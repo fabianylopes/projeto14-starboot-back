@@ -19,7 +19,7 @@ export async function createBag(req, res){
 try {
     await db.collection("bag").insertOne(
         {   
-            owner_id: null, 
+            customer_id: undefined, 
             products: [],
             temporaryToken
         }
@@ -56,6 +56,7 @@ export async function setBag(req, res) {
 
     try {
         const session = await db.collection("session").findOne({token: bag_token})
+        console.log(session)
         const {bag_id} = session
         await db.collection("bag").updateOne({ _id: new ObjectId(bag_id.toString()) },
             {

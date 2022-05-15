@@ -44,7 +44,7 @@ export async function setSignIn (req, res){
         const token = uuid();
         
         await db.collection('session').insertOne({ token, customerId: customer._id});
-        return res.send({token, customerInfo});
+        return res.send({token, customerInfo, customer_id: customer._id});
     }
         
     res.sendStatus(401);
