@@ -48,7 +48,8 @@ try {
 export async function setBag(req, res) {
 
     /*
-    [] atualizar o array produtos, com o novo produto inserido
+    [x] atualizar o array produtos, com o novo produto inserido
+    [] se o porduto já existir no array, atualizar a quantidade
     */
    const {bag_token, product_id} = req.query
    const {requiredQuantity} = req.body
@@ -64,10 +65,11 @@ export async function setBag(req, res) {
                         product_id,
                         requiredQuantity
                     }
-                }
+                }, 
             }
         )
-            return res.sendStatus(200)
+        
+        return res.sendStatus(200)
 
     } catch (error) {
         console.log("Deu ruim pra atualizar a sacola", error)
@@ -88,15 +90,14 @@ export async function getBag(req, res) {
                     name: item.name, 
                     productImage: item.productImage,
                     price: item.price, 
-                    requiredQuantity: product.requiredQuantity
-                    
+                    requiredQuantity: product.requiredQuantity,
                 }
             )
         } catch (error) {
-            
+            res.sendStatus(500)
         }
     }
 
 
-    res.status(200).send(bagProducts)
+    res.status(200).send({products: bagProducts, owner_id: bag.owner_id})
 }

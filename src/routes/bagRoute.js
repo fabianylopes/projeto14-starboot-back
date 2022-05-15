@@ -9,4 +9,4 @@ bagRouter.post('/bag', createBag)
 bagRouter.put('/bag',checkAvaliability, setBag)
 bagRouter.get('/bag', validateToken, getBag)
 
-export default bagRouter
+export default bagRouter 
