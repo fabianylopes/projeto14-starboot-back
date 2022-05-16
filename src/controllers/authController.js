@@ -14,8 +14,7 @@ export async function setSignUp(req, res){
             password: passwordHashed
         });
 
-        res.sendStatus(201);
-        
+        res.sendStatus(201);        
     } catch (error) {
         console.log(error);
         res,sendStatus(500);
