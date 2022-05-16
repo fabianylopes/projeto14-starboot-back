@@ -3,17 +3,10 @@ import { ObjectId } from "mongodb";
 import db from "../db.js";
 
 export async function getSuggestions(req, res){
-    /*
-    [x] Obter sugestões do banco 
-    [x] Obter o product_id da última sugestão inserida no banco
-    [x] Buscar o produto através do product_id
-    [x] Enviar produto com a resposta da requisição 
-    */
-   
     try {
-        const suggestionCollection = await db.collection("suggestions")
-        const suggestion = await suggestionCollection.find({}).sort({_id:-1}).limit(1).toArray() //ordena por ordem decrescente de ids
-        const coffee = await db.collection("products").findOne({_id: new ObjectId(suggestion[0].product_id)}) 
+        const suggestionCollection = await db.collection("suggestions");
+        const suggestion = await suggestionCollection.find({}).sort({_id:-1}).limit(1).toArray(); //ordena por ordem decrescente de ids
+        const coffee = await db.collection("products").findOne({_id: new ObjectId(suggestion[0].product_id)});
 
         const specialistSuggestion = 
         {
@@ -22,24 +15,17 @@ export async function getSuggestions(req, res){
             product_id: suggestion[0].product_id
         }
 
-        console.log(specialistSuggestion)
-        res.status(200).send(specialistSuggestion)    
+        res.status(200).send(specialistSuggestion);    
     } catch (error) {
-        console.log("Deu ruim pra achar a sugestão no banco", error)
+        console.log("Deu ruim pra achar a sugestão no banco", error);
     }
 }
 
 export async function setSuggestions(req, res){
-    /*
-    [] Validar body da requisição 
-    [x] Inserir produto no banco de dados 
-    [x] Enviar resposta da requisição 
-    */
-
-    const suggestion = req.body
+    const suggestion = req.body;
     
     try {
-        const suggestionCollection = await db.collection("suggestions")
+        const suggestionCollection = await db.collection("suggestions");
         suggestionCollection.insertOne(
             {
                 description: suggestion.description, 
@@ -47,8 +33,8 @@ export async function setSuggestions(req, res){
                 date: Date.now()
             }
         )
-        res.sendStatus(201)    
+        res.sendStatus(201);
     } catch (error) {
-        console.log("Deu ruim pra inserir a sugestão no banco", error)
+        console.log("Deu ruim pra inserir a sugestão no banco", error);
     }
 }
