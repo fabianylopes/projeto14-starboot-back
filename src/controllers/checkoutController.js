@@ -12,12 +12,14 @@ export async function checkout(req, res){
         [x] diminuir o valor quantity de requiredQuantity
         [x] retornar sucesso (200) + número de compra
     */
-    const {id} = req.body
+    const bag = res.locals.bag
+    const products = bag.products
 
+    console.log(bag, products)
 try {
 
-    const bag = await db.collection("bag").findOne({_id: new ObjectId(id)})
-    const products = bag.products
+    //const bag = await db.collection("bag").findOne({_id: new ObjectId(id)})
+    //const products = bag.products
 
     for(let product of products){
         const {product_id, requiredQuantity} = product
@@ -33,6 +35,6 @@ try {
     } 
  catch (error) {
     res.sendStatus(500)
-    console.log("deu ruim para criar a sacola", error)
+    console.log("deu ruim para fechar a sacola", error)
     }
 }
