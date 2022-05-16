@@ -56,7 +56,6 @@ export async function setBag(req, res) {
 
     try {
         const session = await db.collection("session").findOne({token: bag_token})
-        console.log(session)
         const {bag_id} = session
         await db.collection("bag").updateOne({ _id: new ObjectId(bag_id.toString()) },
             {
@@ -100,5 +99,5 @@ export async function getBag(req, res) {
     }
 
 
-    res.status(200).send({products: bagProducts, owner_id: bag.owner_id})
+    res.status(200).send({products: bagProducts, customer_id: bag.customer_id})
 }
