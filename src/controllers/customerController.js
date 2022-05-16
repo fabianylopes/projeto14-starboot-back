@@ -1,17 +1,12 @@
-import db from "../db.js";
 import { ObjectId } from "mongodb";
 
-export async function getUser(req, res){
-    /*
-    [x] Obter id da requisição 
-    [x] Buscar o usuário
-    [x] Enviar resposta da requisição 
-    */
+import db from "../db.js";
 
-    const {id} = req.query
-    console.log(id)
+export async function getUser(req, res){
+    const {id} = req.query;
+
     try {
-        const customer = await db.collection("customers").findOne({_id: new ObjectId(id)})
+        const customer = await db.collection("customers").findOne({_id: new ObjectId(id)});
         const customerInfo = 
         {
             name: customer.name,
@@ -20,10 +15,9 @@ export async function getUser(req, res){
             city: customer.city,
             state: customer.state
         }
-        res.status(200).send(customerInfo)
+        res.status(200).send(customerInfo);
     } catch (error) {
-        res.sendStatus(500)
-        console.log("Deu ruim pra buscar o usuário no banco", error)
+        res.sendStatus(500);
+        console.log("Deu ruim pra buscar o usuário no banco", error);
     }
 }
-
