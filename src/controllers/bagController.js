@@ -99,6 +99,5 @@ export async function getBag(req, res) {
         }
     }
 
-
     res.status(200).send({products: bagProducts, owner_id: bag.owner_id})
 }
