@@ -11,7 +11,6 @@ export async function getCoffees(req, res){
     const {id} = req.query
 
     //const id = req.params.coffeeId;
-    console.log(id)
 
     try {
         const coffeeCollection = await db.collection("products")
